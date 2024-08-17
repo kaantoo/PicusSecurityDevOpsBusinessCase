@@ -66,6 +66,50 @@ jobs:
         aws ecs describe-clusters --clusters picus-cluster --region $AWS_REGION || \
         aws ecs create-cluster --cluster-name picus-cluster --region $AWS_REGION
 
+    - name: Register ECS task definition
+      env:
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+      run: |
+        echo '{
+          "family": "picus-task",
+          "networkMode": "awsvpc",
+          "containerDefinitions": [
+            {
+              "name": "picus-container",
+              "image": "'$ECR_REGISTRY'/picus-app:latest",
+              "essential": true,
+              "memory": 512,
+              "cpu": 256,
+              "portMappings": [
+                {
+                  "containerPort": 5000,
+                  "hostPort": 5000
+                }
+              ]
+            }
+          ],
+          "requiresCompatibilities": [
+            "FARGATE"
+          ],
+          "cpu": "256",
+          "memory": "512",
+          "executionRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
+          "taskRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole"
+        }' > task-definition.json
+        aws ecs register-task-definition --cli-input-json file://task-definition.json --region $AWS_REGION
+
+    - name: Create ECS service if it doesn't exist
+      env:
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws ecs describe-services --cluster picus-cluster --services picus-service --region $AWS_REGION || \
+        aws ecs create-service --cluster picus-cluster --service-name picus-service --task-definition picus-task --desired-count 1 --region $AWS_REGION
+
     - name: Deploy to ECS
       env:
         AWS_REGION: ${{ secrets.AWS_REGION }}
