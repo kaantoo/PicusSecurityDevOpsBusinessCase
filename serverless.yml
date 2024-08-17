@@ -1,0 +1,19 @@
+service: picus-service
+
+provider:
+  name: aws
+  runtime: python3.8
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:888577048636:table/TestDB"
+
+functions:
+  deleteItem:
+    handler: LambdaDelete.lambda_handler
+    events:
+      - http:
+          path: picus/{key}
+          method: delete
+          cors: true
