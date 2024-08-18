@@ -76,7 +76,7 @@ jobs:
       run: |
         echo '{
           "family": "picus-task",
-          "networkMode": "hostPort",
+          "networkMode": "bridge",
           "containerDefinitions": [
             {
               "name": "picus-container",
