@@ -146,9 +146,9 @@ jobs:
           ]
         }' > task-definition.json
 
-      cat task-definition.json
+        cat task-definition.json
 
-      aws ecs register-task-definition --cli-input-json file://task-definition.json --region $AWS_REGION
+        aws ecs register-task-definition --cli-input-json file://task-definition.json --region $AWS_REGION
 
 
     - name: Create ECS service if it doesn't exist
