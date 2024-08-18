@@ -75,6 +75,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_REGION: us-west-2  # Replace 'us-west-2' with your region
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
