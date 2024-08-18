@@ -74,96 +74,73 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Create ECS cluster if it doesn't exist
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        aws ecs describe-clusters --clusters picus-cluster --region $AWS_REGION || \
-        aws ecs create-cluster --cluster-name picus-cluster --region $AWS_REGION
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Register ECS task definition
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-      run: |
-        export TASK_DEFINITION=$(cat << EOF
-        {
-          "family": "picus-task",
-          "taskRoleArn": "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
-          "executionRoleArn": "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
-          "networkMode": "host",
-          "containerDefinitions": [
-              {
-                  "name": "picus-container",
-                  "image": "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/picus-app:latest",
-                  "cpu": 256,
-                  "memory": 512,
-                  "portMappings": [
-                      {
-                          "name": "picus-container-5000-tcp",
-                          "containerPort": 5000,
-                          "hostPort": 5000,
-                          "protocol": "tcp"
-                      }
-                  ],
-                  "essential": true,
-                  "environment": [],
-                  "mountPoints": [],
-                  "volumesFrom": [],
-                  "systemControls": []
-              }
-          ],
-          "requiresCompatibilities": [
-              "EC2"
-          ],
-          "cpu": "256",
-          "memory": "512",
-          "runtimePlatform": {
-              "cpuArchitecture": "X86_64",
-              "operatingSystemFamily": "LINUX"
+      - name: Register ECS task definition
+        run: |
+          export TASK_DEFINITION=$(cat << EOF
+          {
+            "family": "picus-task",
+            "taskRoleArn": "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
+            "executionRoleArn": "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
+            "networkMode": "host",
+            "containerDefinitions": [
+                {
+                    "name": "picus-container",
+                    "image": "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/picus-app:latest",
+                    "cpu": 256,
+                    "memory": 512,
+                    "portMappings": [
+                        {
+                            "name": "picus-container-5000-tcp",
+                            "containerPort": 5000,
+                            "hostPort": 5000,
+                            "protocol": "tcp"
+                        }
+                    ],
+                    "essential": true,
+                    "environment": [],
+                    "mountPoints": [],
+                    "volumesFrom": [],
+                    "systemControls": []
+                }
+            ],
+            "requiresCompatibilities": [
+                "EC2"
+            ],
+            "cpu": "256",
+            "memory": "512",
+            "runtimePlatform": {
+                "cpuArchitecture": "X86_64",
+                "operatingSystemFamily": "LINUX"
+            }
           }
-        }
-        EOF
-        )
-        
-        aws ecs register-task-definition --cli-input-json "$TASK_DEFINITION" --region $AWS_REGION
+          EOF
+          )
+          
+          aws ecs register-task-definition --cli-input-json "$TASK_DEFINITION" --region $AWS_REGION
 
-    - name: Create ECS service if it doesn't exist
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        aws ecs describe-services --cluster picus-cluster --services picus1 --region $AWS_REGION || \
-        aws ecs create-service --cluster picus-cluster --service-name picus1 --task-definition picus-task --desired-count 1 --region $AWS_REGION
+      - name: Create ECS service if it doesn't exist
+        run: |
+          aws ecs describe-services --cluster picus-cluster --services picus1 --region $AWS_REGION || \
+          aws ecs create-service --cluster picus-cluster --service-name picus1 --task-definition picus-task --desired-count 1 --region $AWS_REGION
 
-    - name: Deploy to ECS
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-        ECR_REPOSITORY: picus-app
-        IMAGE_TAG: latest
-      run: |
-        aws ecs update-service --cluster picus-cluster --service picus1 --force-new-deployment --region $AWS_REGION
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service --cluster picus-cluster --service picus1 --force-new-deployment --region $AWS_REGION
 
-    - name: Deploy Lambda function
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        cd terraform-picus-service
-        terraform init
-        terraform apply -auto-approve
+      - name: Deploy Lambda function
+        run: |
+          cd terraform-picus-service
+          terraform init
+          terraform apply -auto-approve
