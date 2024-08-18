@@ -147,6 +147,7 @@ jobs:
         aws ecs describe-services --cluster picus-cluster --services picus-service --region $AWS_REGION || \
         aws ecs create-service --cluster picus-cluster --service-name picus-service --task-definition picus-task --desired-count 1 --region $AWS_REGION
 
+
     - name: Deploy to ECS
       env:
         AWS_REGION: ${{ secrets.AWS_REGION }}
