@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Build and Push to ECR
 
 on:
   push:
@@ -9,15 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -54,71 +47,5 @@ jobs:
         ECR_REPOSITORY: picus-app
         IMAGE_TAG: latest
       run: |
-        docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_DEFAULT_REGION=$AWS_REGION -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-    - name: Create ECS cluster if it doesn't exist
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        aws ecs describe-clusters --clusters picus-cluster --region $AWS_REGION || \
-        aws ecs create-cluster --cluster-name picus-cluster --region $AWS_REGION
-
-    - name: Register ECS task definition
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-      run: |
-        echo '{
-          "family": "picus-task",
-          "networkMode": "bridge",
-          "containerDefinitions": [
-            {
-              "name": "picus-container",
-              "image": "'$ECR_REGISTRY'/picus-app",
-              "essential": true,
-              "memory": 512,
-              "cpu": 256,
-              "portMappings": [
-                {
-                  "containerPort": 5000,
-                  "hostPort": 5000
-                }
-              ]
-            }
-          ],
-          "requiresCompatibilities": [
-            "EC2"
-          ],
-          "cpu": "256",
-          "memory": "512",
-          "executionRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
-          "taskRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole"
-        }' > task-definition.json
-        cat task-definition.json
-        aws ecs register-task-definition --cli-input-json file://task-definition.json --region $AWS_REGION
-
-    - name: Create ECS service if it doesn't exist
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        aws ecs describe-services --cluster picus-cluster --services picus-service --region $AWS_REGION || \
-        aws ecs create-service --cluster picus-cluster --service-name picus-service --task-definition picus-task --desired-count 1 --region $AWS_REGION
-
-    - name: Deploy to ECS
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-        ECR_REPOSITORY: picus-app
-        IMAGE_TAG: latest
-      run: |
-        aws ecs update-service --cluster picus-cluster --service picus-service --force-new-deployment --region $AWS_REGION
