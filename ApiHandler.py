@@ -4,7 +4,7 @@ import uuid
 
 app = Flask(__name__)
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('TestDB')
 
 @app.route('/picus/list', methods=['GET'])
