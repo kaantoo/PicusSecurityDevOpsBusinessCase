@@ -1,4 +1,4 @@
-name: Build and Push to ECR
+name: Build, Test, and Deploy to ECS
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
       env:
         AWS_REGION: ${{ secrets.AWS_REGION }}
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
         ECR_REPOSITORY: picus-app
@@ -89,13 +89,13 @@ jobs:
       env:
         AWS_REGION: ${{ secrets.AWS_REGION }}
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
       run: |
         echo '{
           "family": "picus-task",
-          "networkMode": "bridge",
+          "networkMode": "host",
           "containerDefinitions": [
             {
               "name": "picus-container",
@@ -108,7 +108,11 @@ jobs:
                   "containerPort": 5000,
                   "hostPort": 5000
                 }
-              ]
+              ],
+              "environment": [],
+              "mountPoints": [],
+              "volumesFrom": [],
+              "systemControls": []
             }
           ],
           "requiresCompatibilities": [
@@ -117,7 +121,29 @@ jobs:
           "cpu": "256",
           "memory": "512",
           "executionRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
-          "taskRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole"
+          "taskRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
+          "volumes": [],
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.task-iam-role-network-host"
+            },
+            {
+              "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+              "name": "com.amazonaws.ecs.capability.task-iam-role"
+            },
+            {
+              "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            }
+          ],
+          "placementConstraints": [],
+          "compatibilities": [
+            "EC2"
+          ]
         }' > task-definition.json
         cat task-definition.json
         aws ecs register-task-definition --cli-input-json file://task-definition.json --region $AWS_REGION
