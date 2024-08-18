@@ -76,6 +76,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Create ECS cluster if it doesn't exist
       env:
         AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -93,60 +96,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
       run: |
-        echo '{
-          "family": "picus-task",
-          "networkMode": "host",
-          "containerDefinitions": [
-            {
-              "name": "picus-container",
-              "image": "'$ECR_REGISTRY'/picus-app:latest",
-              "essential": true,
-              "memory": 512,
-              "cpu": 256,
-              "portMappings": [
-                {
-                  "containerPort": 5000,
-                  "hostPort": 5000
-                }
-              ],
-              "environment": [],
-              "mountPoints": [],
-              "volumesFrom": [],
-              "systemControls": []
-            }
-          ],
-          "requiresCompatibilities": [
-            "EC2"
-          ],
-          "cpu": "256",
-          "memory": "512",
-          "executionRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
-          "taskRoleArn": "arn:aws:iam::'${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole",
-          "volumes": [],
-          "requiresAttributes": [
-            {
-              "name": "com.amazonaws.ecs.capability.task-iam-role-network-host"
-            },
-            {
-              "name": "com.amazonaws.ecs.capability.ecr-auth"
-            },
-            {
-              "name": "com.amazonaws.ecs.capability.task-iam-role"
-            },
-            {
-              "name": "ecs.capability.execution-role-ecr-pull"
-            },
-            {
-              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-            }
-          ],
-          "placementConstraints": [],
-          "compatibilities": [
-            "EC2"
-          ]
-        }' > task-definition.json
-        cat task-definition.json
-        aws ecs register-task-definition --cli-input-json file://task-definition.json --region $AWS_REGION
+        aws ecs register-task-definition --cli-input-json ./task-definition.json --region $AWS_REGION
 
     - name: Create ECS service if it doesn't exist
       env:
