@@ -96,7 +96,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
       run: |
-        aws ecs register-task-definition --cli-input-json ./task-definition.json --region $AWS_REGION
+        aws ecs register-task-definition --cli-input-json ./task-definition.json --region $AWS_REGION --debug
 
     - name: Create ECS service if it doesn't exist
       env:
