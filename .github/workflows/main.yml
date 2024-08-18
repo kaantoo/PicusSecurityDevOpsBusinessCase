@@ -157,13 +157,3 @@ jobs:
         IMAGE_TAG: latest
       run: |
         aws ecs update-service --cluster picus-cluster --service picus1 --force-new-deployment --region $AWS_REGION
-
-    - name: Deploy Lambda function
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        cd terraform-picus-service
-        terraform init
-        terraform apply -auto-approve
