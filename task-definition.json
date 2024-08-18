@@ -1,5 +1,5 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:888577048636:task-definition/picus-task:2",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:888577048636:task-definition/picus-task:3",
   "containerDefinitions": [
       {
           "name": "picus-container",
