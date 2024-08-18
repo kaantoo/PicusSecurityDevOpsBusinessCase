@@ -76,7 +76,7 @@ jobs:
       run: |
         echo '{
           "family": "picus-task",
-          "networkMode": "awsvpc",
+          "networkMode": "hostPort",
           "containerDefinitions": [
             {
               "name": "picus-container",
@@ -93,7 +93,7 @@ jobs:
             }
           ],
           "requiresCompatibilities": [
-            "FARGATE"
+            "EC2"
           ],
           "cpu": "256",
           "memory": "512",
