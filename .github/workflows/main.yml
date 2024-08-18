@@ -80,7 +80,7 @@ jobs:
           "containerDefinitions": [
             {
               "name": "picus-container",
-              "image": "'$ECR_REGISTRY'/picus-app:latest",
+              "image": "'$ECR_REGISTRY'/picus-app",
               "essential": true,
               "memory": 512,
               "cpu": 256,
