@@ -1,5 +1,8 @@
 {
     "family": "picus-task",
+    "taskRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
+    "networkMode": "host",
     "containerDefinitions": [
         {
             "name": "picus-container",
@@ -21,9 +24,6 @@
             "systemControls": []
         }
     ],
-    "taskRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
-    "executionRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
-    "networkMode": "host",
     "requiresCompatibilities": [
         "EC2"
     ],

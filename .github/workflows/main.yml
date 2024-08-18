@@ -96,7 +96,47 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
       run: |
-        aws ecs register-task-definition --cli-input-json ./task-definition.json --region $AWS_REGION --debug
+        export TASK_DEFINITION=$(cat << EOF
+        {
+          "family": "picus-task",
+          "taskRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
+          "executionRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
+          "networkMode": "host",
+          "containerDefinitions": [
+              {
+                  "name": "picus-container",
+                  "image": "888577048636.dkr.ecr.us-east-1.amazonaws.com/picus-app:latest",
+                  "cpu": 256,
+                  "memory": 512,
+                  "portMappings": [
+                      {
+                          "name": "picus-container-5000-tcp",
+                          "containerPort": 5000,
+                          "hostPort": 5000,
+                          "protocol": "tcp"
+                      }
+                  ],
+                  "essential": true,
+                  "environment": [],
+                  "mountPoints": [],
+                  "volumesFrom": [],
+                  "systemControls": []
+              }
+          ],
+          "requiresCompatibilities": [
+              "EC2"
+          ],
+          "cpu": "256",
+          "memory": "512",
+          "runtimePlatform": {
+              "cpuArchitecture": "X86_64",
+              "operatingSystemFamily": "LINUX"
+          }
+        }
+        EOF
+        )
+        
+        aws ecs register-task-definition --cli-input-json "$TASK_DEFINITION" --region $AWS_REGION
 
     - name: Create ECS service if it doesn't exist
       env:
