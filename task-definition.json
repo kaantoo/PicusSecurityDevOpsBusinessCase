@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:888577048636:task-definition/picus-task:2",
+    "family": "picus-task",
     "containerDefinitions": [
         {
             "name": "picus-container",
@@ -21,34 +21,9 @@
             "systemControls": []
         }
     ],
-    "family": "picus-task",
     "taskRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
     "networkMode": "host",
-    "revision": 2,
-    "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role-network-host"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        }
-    ],
-    "placementConstraints": [],
-    "compatibilities": [
-        "EC2"
-    ],
     "requiresCompatibilities": [
         "EC2"
     ],
@@ -57,8 +32,5 @@
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
-    },
-    "registeredAt": "2024-08-18T12:57:20.994Z",
-    "registeredBy": "arn:aws:iam::888577048636:root",
-    "tags": []
+    }
 }
