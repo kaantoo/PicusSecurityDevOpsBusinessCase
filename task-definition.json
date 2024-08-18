@@ -1,64 +1,64 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:888577048636:task-definition/picus-task:3",
-  "containerDefinitions": [
-      {
-          "name": "picus-container",
-          "image": "888577048636.dkr.ecr.us-east-1.amazonaws.com/picus-app:latest",
-          "cpu": 256,
-          "memory": 512,
-          "portMappings": [
-              {
-                  "name": "picus-container-5000-tcp",
-                  "containerPort": 5000,
-                  "hostPort": 5000,
-                  "protocol": "tcp"
-              }
-          ],
-          "essential": true,
-          "environment": [],
-          "mountPoints": [],
-          "volumesFrom": [],
-          "systemControls": []
-      }
-  ],
-  "family": "picus-task",
-  "taskRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
-  "executionRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
-  "networkMode": "host",
-  "revision": 3,
-  "volumes": [],
-  "status": "ACTIVE",
-  "requiresAttributes": [
-      {
-          "name": "com.amazonaws.ecs.capability.task-iam-role-network-host"
-      },
-      {
-          "name": "com.amazonaws.ecs.capability.ecr-auth"
-      },
-      {
-          "name": "com.amazonaws.ecs.capability.task-iam-role"
-      },
-      {
-          "name": "ecs.capability.execution-role-ecr-pull"
-      },
-      {
-          "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-      }
-  ],
-  "placementConstraints": [],
-  "compatibilities": [
-      "EC2"
-  ],
-  "requiresCompatibilities": [
-      "EC2"
-  ],
-  "cpu": "256",
-  "memory": "512",
-  "runtimePlatform": {
-      "cpuArchitecture": "X86_64",
-      "operatingSystemFamily": "LINUX"
-  },
-  "registeredAt": "2024-08-18T12:57:20.994Z",
-  "registeredBy": "arn:aws:iam::888577048636:root",
-  "tags": []
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:888577048636:task-definition/picus-task:2",
+    "containerDefinitions": [
+        {
+            "name": "picus-container",
+            "image": "888577048636.dkr.ecr.us-east-1.amazonaws.com/picus-app:latest",
+            "cpu": 256,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "name": "picus-container-5000-tcp",
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
+        }
+    ],
+    "family": "picus-task",
+    "taskRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::888577048636:role/ecsTaskExecutionRole",
+    "networkMode": "host",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role-network-host"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-08-18T12:57:20.994Z",
+    "registeredBy": "arn:aws:iam::888577048636:root",
+    "tags": []
 }
