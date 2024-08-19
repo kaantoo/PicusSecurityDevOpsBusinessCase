@@ -122,7 +122,7 @@ curl -X DELETE http://your-api-endpoint/picus/1
 
 ### Sample Response
 ```json
-{"message": "Item with ObjectID 1 deleted successfully"}
+{"message": "Item deleted successfully"}
 ```
 ![alt text](./images/image2.png)
 
