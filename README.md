@@ -62,7 +62,7 @@ The web application provides several HTTP endpoints to interact with the DynamoD
 - **Implementation**: This endpoint queries the DynamoDB table and returns a JSON array of all items.
 - **Sample Request**:
   ```bash
-  curl -X GET http://your-api-endpoint/picus/list
+  curl -X GET http://127.0.0.1:80827dev/picus/list
   ```
 - **Sample Response**:
   ```json
@@ -71,30 +71,33 @@ The web application provides several HTTP endpoints to interact with the DynamoD
     {"id": "2"}
   ]
   ```
+  ![alt text](./images/image9.png)
 
 ### 2. POST /picus/put
-- **Functionality**: Saves a JSON object to the DynamoDB table and returns the generated `ObjectID`.
-- **Implementation**: Accepts a JSON payload, generates a unique `ObjectID`, and stores the data in the DynamoDB table.
+- **Functionality**: Saves a JSON object to the DynamoDB table and returns the generated `id`.
+- **Implementation**: Accepts a JSON payload, generates a unique `id`, and stores the data in the DynamoDB table.
 - **Sample Request**:
   ```bash
-  curl -X POST http://your-api-endpoint/picus/put -d '{"Data": "Sample Data"}'
+  curl -X POST http://127.0.0.1:80827dev/picus/put -d '{"Data": "Sample Data"}'
   ```
 - **Sample Response**:
   ```json
   {"id": "1"}
   ```
+  ![alt text](./images/image8.png)
 
 ### 3. GET /picus/get/{key}
 - **Functionality**: Retrieves a specific item from the DynamoDB table using the provided `id`.
 - **Implementation**: Fetches the item corresponding to the `id` from the DynamoDB table and returns it in JSON format.
 - **Sample Request**:
   ```bash
-  curl -X GET http://your-api-endpoint/picus/get/1
+  curl -X GET http://127.0.0.1:80827dev/picus/get/1
   ```
 - **Sample Response**:
   ```json
-  {"ObjectID": "1", "Data": "Sample Data"}
+  {"id": "1", "item": "Sample Data"}
   ```
+  ![alt text](./images/image7.png)
 
 ## Lambda Function: DELETE /picus/{key}
 
