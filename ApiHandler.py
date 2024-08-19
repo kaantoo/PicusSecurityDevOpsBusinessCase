@@ -27,7 +27,7 @@ def put_item():
 @app.route('/dev/picus/get/<key>', methods=['GET'])
 def get_item(key):
     try:
-        response = table.get_item(Key={'id': key})
+        response = table.get_item(Key={'id': int(key)})
         if 'Item' in response:
             return jsonify(response['Item'])
         else:
