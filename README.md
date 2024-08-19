@@ -112,7 +112,7 @@ This Lambda function is responsible for deleting an item from the DynamoDB table
 2. **Deploy using Serverless Framework**:
    - Run the following command to deploy the function:
      ```bash
-     serverless deploy
+     sls deploy
      ```
 
 ### Sample Request
