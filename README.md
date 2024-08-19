@@ -364,6 +364,7 @@ The application is deployed to AWS ECS using Terraform, ensuring consistent and 
 ## Security Considerations
 
 - **IAM Roles**: Use the principle of least privilege when creating IAM roles and policies to ensure that services and users only have the permissions they need.
+![alt text](./images/image5.png)
 - **Environment Variables**: Store sensitive information such as database credentials securely using AWS Secrets Manager or Parameter Store.
 - **Network Security**: Deploy the ECS service in a secure VPC and use security groups to control inbound and outbound traffic.
 
