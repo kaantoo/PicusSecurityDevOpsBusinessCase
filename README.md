@@ -411,6 +411,3 @@ This project showcases a comprehensive DevOps workflow, from building and deploy
 - [Docker Documentation](https://docs.docker.com/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
----
-
-This README provides a comprehensive overview and detailed instructions for the DevOps Engineer business case, ensuring that anyone who reads it can understand the project and replicate the setup.
