@@ -14,6 +14,9 @@ def list_items():
 
 @app.route('/dev/picus/put', methods=['POST'])
 def put_item():
+    if request.content_type != 'application/json':
+        return jsonify({'error': 'Unsupported Media Type'}), 415
+
     item = request.json
     item['id'] = str(uuid.uuid4())
     table.put_item(Item=item)
