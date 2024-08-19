@@ -51,7 +51,7 @@ The application requires a DynamoDB table for storing and managing data.
 ### Table Schema
 - **Primary Key**: `id` (number)
 - **Attributes**: Additional attributes can be added to store more information in each item.
-![alt text](image.png)
+![alt text](./images/image.png)
 
 ## Application Endpoints
 
@@ -107,7 +107,7 @@ This Lambda function is responsible for deleting an item from the DynamoDB table
 ### Steps to Deploy
 1. **Create a `serverless.yml` file**:
    - Define the Lambda function, specify the DynamoDB table it interacts with, and configure the necessary IAM roles.
-   ![alt text](image1.png)
+   ![alt text](./images/image1.png)
    
 2. **Deploy using Serverless Framework**:
    - Run the following command to deploy the function:
@@ -124,7 +124,7 @@ curl -X DELETE http://your-api-endpoint/picus/1
 ```json
 {"message": "Item with ObjectID 1 deleted successfully"}
 ```
-![alt text](image2.png)
+![alt text](./images/image2.png)
 
 ## Docker Setup
 
@@ -163,7 +163,7 @@ CMD ["python", "ApiHandler.py"]
   ```bash
   docker build -t picus-app .
   ```
-![alt text](image3.png)
+![alt text](./images/image3.png)
 ## CI/CD Pipeline with GitHub Actions
 
 The CI/CD pipeline is set up using GitHub Actions to automate the build, test, and deployment processes.
@@ -324,7 +324,7 @@ jobs:
           terraform init
           terraform apply -auto-approve
 ```
-![alt text](image4.png)
+![alt text](./images/image4.png)
 
 ## Deployment to AWS ECS Using Terraform
 
