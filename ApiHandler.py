@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import boto3
 import uuid
+import os
 
+os.environ['AWS_REGION'] = 'us-east-1'
 app = Flask(__name__)
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
