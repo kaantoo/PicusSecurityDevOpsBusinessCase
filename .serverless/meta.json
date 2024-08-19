@@ -197,7 +197,7 @@
                         "S3Bucket": {
                           "Ref": "ServerlessDeploymentBucket"
                         },
-                        "S3Key": "serverless/picus-service/dev/1723920716927-2024-08-17T18:51:56.927Z/picus-service.zip"
+                        "S3Key": "serverless/picus-service/dev/1724024686281-2024-08-18T23:44:46.281Z/picus-service.zip"
                       },
                       "Handler": "LambdaDelete.lambda_handler",
                       "Runtime": "python3.8",
@@ -215,14 +215,14 @@
                       "DeleteItemLogGroup"
                     ]
                   },
-                  "DeleteItemLambdaVersionUqWJNGhfKeFumYoBsBexnPf7Na7bDvo4GecBfrkYpY": {
+                  "DeleteItemLambdaVersionGeQsDATEpBIoTOL5IfwiKCVU6CyXNfDhUfTS83NVc4": {
                     "Type": "AWS::Lambda::Version",
                     "DeletionPolicy": "Retain",
                     "Properties": {
                       "FunctionName": {
                         "Ref": "DeleteItemLambdaFunction"
                       },
-                      "CodeSha256": "TIs74DDwjn9YSgNJr/VwnWXPhYWdj4w6SkTQhPH0KeQ="
+                      "CodeSha256": "i490/DPd48lTP4EdK/RHbBtZOPBMtZ6X8nt/SBQsXg0="
                     }
                   },
                   "ApiGatewayRestApi": {
@@ -355,7 +355,7 @@
                       "DeleteItemLambdaPermissionApiGateway"
                     ]
                   },
-                  "ApiGatewayDeployment1723920715537": {
+                  "ApiGatewayDeployment1724024680407": {
                     "Type": "AWS::ApiGateway::Deployment",
                     "Properties": {
                       "RestApiId": {
@@ -418,7 +418,7 @@
                   "DeleteItemLambdaFunctionQualifiedArn": {
                     "Description": "Current Lambda function version",
                     "Value": {
-                      "Ref": "DeleteItemLambdaVersionUqWJNGhfKeFumYoBsBexnPf7Na7bDvo4GecBfrkYpY"
+                      "Ref": "DeleteItemLambdaVersionGeQsDATEpBIoTOL5IfwiKCVU6CyXNfDhUfTS83NVc4"
                     },
                     "Export": {
                       "Name": "sls-picus-service-dev-DeleteItemLambdaFunctionQualifiedArn"
@@ -571,7 +571,7 @@
                 "timeout": 6,
                 "runtime": "python3.8",
                 "vpc": {},
-                "versionLogicalId": "DeleteItemLambdaVersionUqWJNGhfKeFumYoBsBexnPf7Na7bDvo4GecBfrkYpY"
+                "versionLogicalId": "DeleteItemLambdaVersionGeQsDATEpBIoTOL5IfwiKCVU6CyXNfDhUfTS83NVc4"
               }
             }
           },
@@ -778,7 +778,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/picus-service/dev/1723920716927-2024-08-17T18:51:56.927Z/picus-service.zip"
+                  "S3Key": "serverless/picus-service/dev/1724024686281-2024-08-18T23:44:46.281Z/picus-service.zip"
                 },
                 "Handler": "LambdaDelete.lambda_handler",
                 "Runtime": "python3.8",
@@ -796,14 +796,14 @@
                 "DeleteItemLogGroup"
               ]
             },
-            "DeleteItemLambdaVersionUqWJNGhfKeFumYoBsBexnPf7Na7bDvo4GecBfrkYpY": {
+            "DeleteItemLambdaVersionGeQsDATEpBIoTOL5IfwiKCVU6CyXNfDhUfTS83NVc4": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "DeleteItemLambdaFunction"
                 },
-                "CodeSha256": "TIs74DDwjn9YSgNJr/VwnWXPhYWdj4w6SkTQhPH0KeQ="
+                "CodeSha256": "i490/DPd48lTP4EdK/RHbBtZOPBMtZ6X8nt/SBQsXg0="
               }
             },
             "ApiGatewayRestApi": {
@@ -936,7 +936,7 @@
                 "DeleteItemLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1723920715537": {
+            "ApiGatewayDeployment1724024680407": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -999,7 +999,7 @@
             "DeleteItemLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "DeleteItemLambdaVersionUqWJNGhfKeFumYoBsBexnPf7Na7bDvo4GecBfrkYpY"
+                "Ref": "DeleteItemLambdaVersionGeQsDATEpBIoTOL5IfwiKCVU6CyXNfDhUfTS83NVc4"
               },
               "Export": {
                 "Name": "sls-picus-service-dev-DeleteItemLambdaFunctionQualifiedArn"
@@ -1152,7 +1152,7 @@
           "timeout": 6,
           "runtime": "python3.8",
           "vpc": {},
-          "versionLogicalId": "DeleteItemLambdaVersionUqWJNGhfKeFumYoBsBexnPf7Na7bDvo4GecBfrkYpY"
+          "versionLogicalId": "DeleteItemLambdaVersionGeQsDATEpBIoTOL5IfwiKCVU6CyXNfDhUfTS83NVc4"
         }
       }
     },
@@ -1161,9 +1161,13 @@
       "deploy"
     ],
     "options": {},
-    "error": null,
+    "error": {
+      "message": "An error occurred: DeleteItemLambdaFunction - Resource handler returned message: \"Unzipped size must be smaller than 262144000 bytes (Service: Lambda, Status Code: 400, Request ID: 20ac3708-24c5-482a-8f34-1a1a825825bc)\" (RequestToken: 00434435-c987-d594-78ed-f2b6ed8a0b49, HandlerErrorCode: InvalidRequest).",
+      "stack": "ServerlessError2: An error occurred: DeleteItemLambdaFunction - Resource handler returned message: \"Unzipped size must be smaller than 262144000 bytes (Service: Lambda, Status Code: 400, Request ID: 20ac3708-24c5-482a-8f34-1a1a825825bc)\" (RequestToken: 00434435-c987-d594-78ed-f2b6ed8a0b49, HandlerErrorCode: InvalidRequest).\n    at file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:682:830\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async AwsDeploy.update (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:682:25421)\n    at async aws:deploy:deploy:updateStack (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:693:5467)\n    at async PluginManager.runHooks (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:879:9309)\n    at async PluginManager.invoke (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:879:10080)\n    at async PluginManager.spawn (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:879:10441)\n    at async PluginManager.runHooks (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:879:9309)\n    at async PluginManager.invoke (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:879:10080)\n    at async PluginManager.run (file:///Users/kaanyuksel/.serverless/releases/4.1.22/package/dist/sf-core.js:879:10811)",
+      "code": "AWS_CLOUD_FORMATION_UPDATE_STACK_INTERNAL_LAMBDA_FUNCTION_UPDATE_FAILED"
+    },
     "params": {},
-    "machineId": "204c597a75732c7555a621d5faf2dc24",
+    "machineId": "4bf6bab76e4eee10d0638130aac4cd7d",
     "accessKeyV2": "<REDACTED>",
     "accessKeyV1": "<REDACTED>",
     "orgId": "09add703-c7e1-4cf4-905a-b8d535cbfa5d",
@@ -1185,29 +1189,10 @@
     "serviceProviderAwsAccountId": "888577048636",
     "versionSf": "4.1.22",
     "serviceProviderAwsCfStackName": "picus-service-dev",
-    "integrations": {},
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:888577048636:stack/picus-service-dev/4c2e0ed0-5ca9-11ef-a190-0afffb6739cf",
     "serviceProviderAwsCfStackCreated": "2024-08-17T14:59:26.973Z",
-    "serviceProviderAwsCfStackUpdated": "2024-08-17T18:52:18.029Z",
-    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
-    "serviceProviderAwsCfStackOutputs": [
-      {
-        "OutputKey": "DeleteItemLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:888577048636:function:picus-service-dev-deleteItem:7",
-        "Description": "Current Lambda function version",
-        "ExportName": "sls-picus-service-dev-DeleteItemLambdaFunctionQualifiedArn"
-      },
-      {
-        "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://1qecpla7te.execute-api.us-east-1.amazonaws.com/dev",
-        "Description": "URL of the service endpoint",
-        "ExportName": "sls-picus-service-dev-ServiceEndpoint"
-      },
-      {
-        "OutputKey": "ServerlessDeploymentBucketName",
-        "OutputValue": "picus-service-dev-serverlessdeploymentbucket-lgaxg0hh0rkd",
-        "ExportName": "sls-picus-service-dev-ServerlessDeploymentBucketName"
-      }
-    ]
+    "serviceProviderAwsCfStackUpdated": "2024-08-18T23:46:49.150Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_ROLLBACK_IN_PROGRESS",
+    "serviceProviderAwsCfStackOutputs": null
   }
 }
